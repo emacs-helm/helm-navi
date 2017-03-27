@@ -57,24 +57,37 @@
           :sources (helm-build-sync-source " Navi headings and keywords in-buffer"
                      :candidates (helm-outshine--get-candidates-in-file
                                   (current-buffer)
-                                  (concat (navi-make-regexp-alternatives
-                                           (navi-get-regexp (car
-                                                             (split-string
-                                                              (symbol-name major-mode)
-                                                              "-mode" 'OMIT-NULLS))
-                                                            :ALL)
-                                           (mapconcat (lambda (s)
-                                                        (s-trim (car s)))
-                                                      outline-promotion-headings
-                                                      "\\|"))
-                                          ".*$"))
-
+                                  (helm-navi--get-regexp))
                      :action '(("Go to heading" . helm-outshine--goto-marker))
                      :follow 1
                      ;; Not ideal, because collapsed/hidden parts will
                      ;; be shown afterward, but I can't find a way to
                      ;; save this information and restore it
-                     :init 'show-all))))
+                     :init 'show-all)
+          :preselect (helm-navi--in-buffer-preselect))))
+
+;;;;; Support functions
+
+(defun helm-navi--in-buffer-preselect ()
+  "Return string containing current or previous visible heading for preselecting in Helm buffer."
+  (save-excursion
+    (goto-char (line-end-position))
+    (when (re-search-backward (helm-navi--get-regexp))
+      (match-string 0))))
+
+(defun helm-navi--get-regexp ()
+  "Return regexp for all headings and keywords in current buffer."
+  (concat (navi-make-regexp-alternatives
+           (navi-get-regexp (car
+                             (split-string
+                              (symbol-name major-mode)
+                              "-mode" 'OMIT-NULLS))
+                            :ALL)
+           (mapconcat (lambda (s)
+                        (s-trim (car s)))
+                      outline-promotion-headings
+                      "\\|"))
+          ".*$"))
 
 ;;;; Footer
 
