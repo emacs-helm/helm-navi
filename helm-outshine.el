@@ -71,14 +71,16 @@
   (goto-char (marker-position marker)))
 
 (defun helm-source--outshine-headings-for-files (filenames)
-  "Return helm-sync-source for Outshine headings in current buffer."
+  "Return helm-sync-source for Outshine headings in FILENAMES."
   (helm-build-sync-source " Outshine headings in-buffer"
     :candidates (apply #'append (mapcar 'helm-outshine--get-candidates-in-file filenames))
     :action '(("Go to heading" . helm-outshine--goto-marker))))
 
 (defun helm-outshine--get-candidates-in-file (filename &optional regexp)
   "Return Outshine heading candidates in FILENAME.
-FILENAME may be a path or a buffer."
+FILENAME may be a path or a buffer.  Optional argument REGEXP is
+a regular expression to match, or `outline-promotion-headings' by
+default."
   (with-current-buffer (pcase filename
                          ((pred bufferp) (buffer-name filename))
                          ((pred stringp) (find-file-noselect filename)))
