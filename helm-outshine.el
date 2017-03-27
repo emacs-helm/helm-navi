@@ -70,7 +70,7 @@
   (switch-to-buffer (marker-buffer marker))
   (goto-char (marker-position marker)))
 
-(defun helm-source--outshine-headings-for-files (filenames &optional parents)
+(defun helm-source--outshine-headings-for-files (filenames)
   "Return helm-sync-source for Outshine headings in current buffer."
   (helm-build-sync-source " Outshine headings in-buffer"
     :candidates (apply #'append (mapcar 'helm-outshine--get-candidates-in-file filenames))
@@ -98,8 +98,7 @@ FILENAME may be a path or a buffer."
       (save-excursion
         (save-restriction
           (goto-char (point-min))
-          (cl-loop with width = (window-width (helm-window))
-                   while (funcall search-fn)
+          (cl-loop while (funcall search-fn)
                    for beg = (point-at-bol)
                    for end = (point-at-eol)
                    when (and helm-outshine-fontify
