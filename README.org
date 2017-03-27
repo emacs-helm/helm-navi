@@ -1,0 +1,32 @@
+* helm-navi-outshine
+
+This package lets you navigate through a buffer using the headings and keywords provided by =outshine= and =navi-mode=, presented in a Helm buffer.
+
+** Installation
+
+Install the package from MELPA and you're all set!
+
+If you want to install it manually, put the two =.el= files in your =load-path=, then add this to your init file:
+
+#+BEGIN_SRC elisp
+  (require 'helm-outshine)
+  (require 'helm-navi)
+#+END_SRC
+
+** Commands
+
++  =helm-navi=: Show all headings and keywords provided by =navi-mode= in a Helm buffer.  This is the equivalent of running =outshine-navi= and then pressing =C-8 a=.
++  =helm-outshine=: Show Outshine headings in Helm buffer.
+
+** Contributions
+
+Yes, please.
+
+** Credits
+
++  Thanks to Thierry Volpiatto for his tireless work on Helm.
++  Thanks to Thorsten Jolitz for =outshine= / =outorg= / =navi-mode=.
+
+** License
+
+GPLv3
