@@ -37,6 +37,7 @@
 
 (require 'helm-org)
 (require 'outshine)
+(require 's)
 
 ;;;; Customization
 
