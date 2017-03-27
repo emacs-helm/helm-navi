@@ -1,6 +1,8 @@
 * helm-navi-outshine
 
-This package lets you navigate through a buffer using the headings and keywords provided by =outshine= and =navi-mode=, presented in a Helm buffer.
+This package lets you navigate through a buffer using the headings and keywords provided by =outshine= and =navi-mode=, presented in a Helm buffer.  Here's an example (note that fontification will be shown according to your own theme and faces):
+
+[[screenshot.png]]
 
 ** Installation
 
