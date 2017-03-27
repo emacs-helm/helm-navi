@@ -1,5 +1,11 @@
 ;;; helm-navi.el --- Helm for navi-mode -*- lexical-binding: t -*-
 
+;; Author: Adam Porter <adam@alphapapa.net>
+;; Url: http://github.com/emacs-helm/helm-navi-outshine
+;; Version: 0.1-pre
+;; Package-Requires: ((emacs "24.4") (helm "1.9.4") (navi-mode "2.0") (s "1.10.0"))
+;; Keywords: navigation, outlines
+
 ;; Copyright (C) 2012 ~ 2017 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
