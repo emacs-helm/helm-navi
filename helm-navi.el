@@ -72,8 +72,7 @@ is ever a performance issue on slow machines, you can."
   (interactive)
   (save-restriction
     (helm :buffer "*helm-navi-headings-and-keywords-current-buffer*"
-          :sources (helm-source--navi-keywords-and-outshine-headings-for-buffers
-                    (list (current-buffer)))
+          :sources (helm-source--navi-keywords-and-outshine-headings-in-buffer (current-buffer))
           :preselect (helm-navi--in-buffer-preselect))))
 
 ;;;###autoload
@@ -84,17 +83,15 @@ is ever a performance issue on slow machines, you can."
   "Show matches for Outshine headings in current buffer."
   (interactive)
   (helm :buffer "*helm-navi-headings-current-buffer*"
-        :sources (helm-source--outshine-headings-for-buffers
-                  (list (current-buffer)))
+        :sources (helm-source--outshine-headings-in-buffer (current-buffer))
         :preselect (helm-navi--current-or-previous-outshine-heading)))
 
 ;;;;; Helm sources
 
-(defun helm-source--navi-keywords-and-outshine-headings-for-buffers (buffers)
-  "Return Helm source for `navi-mode' keywords and `outshine' headings in BUFFERS."
-  (helm-build-sync-source " Navi headings and Outshine keywords"
-    :candidates (apply #'append (--map (helm-navi--get-candidates-in-buffer it #'helm-navi--get-regexp)
-                                       buffers))
+(defun helm-source--navi-keywords-and-outshine-headings-in-buffer (buffer)
+  "Return Helm source for `navi-mode' keywords and `outshine' headings in BUFFER."
+  (helm-build-sync-source (concat " " (buffer-name buffer))
+    :candidates (helm-navi--get-candidates-in-buffer buffer #'helm-navi--get-regexp)
     :action '(("Go to heading" . helm-navi--goto-marker))
     :follow 1
     ;; FIXME: Calling `show-all' is not ideal,
@@ -106,10 +103,10 @@ is ever a performance issue on slow machines, you can."
     ;; non-Org buffers.
     :init 'show-all))
 
-(defun helm-source--outshine-headings-for-buffers (buffers)
-  "Return helm-sync-source for Outshine headings in BUFFERS."
-  (helm-build-sync-source " Outshine headings"
-    :candidates (apply #'append (mapcar 'helm-navi--get-candidates-in-buffer buffers))
+(defun helm-source--outshine-headings-in-buffer (buffer)
+  "Return helm-sync-source for Outshine headings in BUFFER."
+  (helm-build-sync-source (concat " " (buffer-name buffer))
+    :candidates (helm-navi--get-candidates-in-buffer buffer)
     :action '(("Go to heading" . helm-navi--goto-marker))
     :follow 1
     :init 'show-all))
