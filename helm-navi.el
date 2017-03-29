@@ -120,6 +120,9 @@ function to return a regular expression, or
 `outline-promotion-headings' by default."
   ;; Much of this code is copied from helm-org.el
   (with-current-buffer buffer
+    ;; Make sure outshine is loaded
+    (unless outline-promotion-headings
+      (error "Outshine is not activated in buffer \"%s\".  Activate `outline-minor-mode', or consult Outshine's documentation for further instructions if necessary." (buffer-name buffer)))
     (let* ((heading-regexp (pcase regexp
                              ((pred functionp) (funcall regexp))
                              ((pred stringp) regexp)
