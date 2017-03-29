@@ -72,20 +72,8 @@ is ever a performance issue on slow machines, you can."
   (interactive)
   (save-restriction
     (helm :buffer "*helm-navi-headings-and-keywords-current-buffer*"
-          :sources (helm-build-sync-source " Navi headings and keywords in-buffer"
-                     :candidates (helm-navi--get-outshine-candidates-in-file
-                                  (current-buffer)
-                                  (helm-navi--get-regexp))
-                     :action '(("Go to heading" . helm-navi--goto-marker))
-                     :follow 1
-                     ;; FIXME: Calling `show-all' is not ideal,
-                     ;; because collapsed/hidden nodes will be shown
-                     ;; afterward, but I can't find a way to save this
-                     ;; information and restore it.  In Org buffers,
-                     ;; `org-show-entry' can be used, but I haven't
-                     ;; been able to find a similar function for
-                     ;; non-Org buffers.
-                     :init 'show-all)
+          :sources (helm-source--navi-keywords-and-outshine-headings-for-buffers
+                    (list (current-buffer)))
           :preselect (helm-navi--in-buffer-preselect))))
 
 ;;;###autoload
@@ -96,38 +84,55 @@ is ever a performance issue on slow machines, you can."
   "Show matches for Outshine headings in current buffer."
   (interactive)
   (helm :buffer "*helm-navi-headings-current-buffer*"
-        :sources (helm-source--outshine-headings-for-files
+        :sources (helm-source--outshine-headings-for-buffers
                   (list (current-buffer)))
         :preselect (helm-navi--current-or-previous-outshine-heading)))
 
+;;;;; Helm sources
+
+(defun helm-source--navi-keywords-and-outshine-headings-for-buffers (buffers)
+  "Return Helm source for `navi-mode' keywords and `outshine' headings in BUFFERS."
+  (helm-build-sync-source " Navi headings and Outshine keywords"
+    :candidates (apply #'append (--map (helm-navi--get-candidates-in-buffer it #'helm-navi--get-regexp)
+                                       buffers))
+    :action '(("Go to heading" . helm-navi--goto-marker))
+    :follow 1
+    ;; FIXME: Calling `show-all' is not ideal,
+    ;; because collapsed/hidden nodes will be shown
+    ;; afterward, but I can't find a way to save this
+    ;; information and restore it.  In Org buffers,
+    ;; `org-show-entry' can be used, but I haven't
+    ;; been able to find a similar function for
+    ;; non-Org buffers.
+    :init 'show-all))
+
+(defun helm-source--outshine-headings-for-buffers (buffers)
+  "Return helm-sync-source for Outshine headings in BUFFERS."
+  (helm-build-sync-source " Outshine headings"
+    :candidates (apply #'append (mapcar 'helm-navi--get-candidates-in-buffer buffers))
+    :action '(("Go to heading" . helm-navi--goto-marker))
+    :follow 1
+    :init 'show-all))
+
 ;;;;; Support functions
 
-(defun helm-navi--current-or-previous-outshine-heading ()
-  "Return string containing current or previous visible heading in current buffer.
-Typically for preselecting in Helm buffer."
-  (if (outline-on-heading-p)
-      (buffer-substring-no-properties (point-at-bol) (point-at-eol))
-    (save-excursion
-      (outline-previous-visible-heading 1)
-      (buffer-substring-no-properties (point-at-bol) (point-at-eol)))))
-
-(defun helm-navi--get-outshine-candidates-in-file (filename &optional regexp)
-  "Return Outshine heading candidates in FILENAME.
-FILENAME may be a path or a buffer.  Optional argument REGEXP is
-a regular expression to match, or `outline-promotion-headings' by
-default."
+(defun helm-navi--get-candidates-in-buffer (buffer &optional regexp)
+  "Return Outshine heading candidates in BUFFER.
+Optional argument REGEXP is a regular expression to match, a
+function to return a regular expression, or
+`outline-promotion-headings' by default."
   ;; Much of this code is copied from helm-org.el
-  (with-current-buffer (pcase filename
-                         ((pred bufferp) (buffer-name filename))
-                         ((pred stringp) (find-file-noselect filename)))
-    (let* ((heading-regexp (or regexp
-                               (concat "^\\("
-                                       (mapconcat (lambda (s)
-                                                    (s-trim (car s)))
-                                                  outline-promotion-headings
-                                                  "\\|")
-                                       "\\)"
-                                       "\s+\\(.*\\)$")))
+  (with-current-buffer buffer
+    (let* ((heading-regexp (pcase regexp
+                             ((pred functionp) (funcall regexp))
+                             ((pred stringp) regexp)
+                             ((pred null) (concat "^\\("
+                                                  (mapconcat (lambda (s)
+                                                               (s-trim (car s)))
+                                                             outline-promotion-headings
+                                                             "\\|")
+                                                  "\\)"
+                                                  "\s+\\(.*\\)$"))))
            (match-fn (if helm-navi-fontify
                          #'match-string
                        #'match-string-no-properties))
@@ -152,11 +157,14 @@ default."
                                (<= level helm-org-headings-max-depth)))
                    collect `(,heading . ,(point-marker))))))))
 
-(defun helm-source--outshine-headings-for-files (filenames)
-  "Return helm-sync-source for Outshine headings in FILENAMES."
-  (helm-build-sync-source " Outshine headings in-buffer"
-    :candidates (apply #'append (mapcar 'helm-navi--get-outshine-candidates-in-file filenames))
-    :action '(("Go to heading" . helm-outshine--goto-marker))))
+(defun helm-navi--current-or-previous-outshine-heading ()
+  "Return string containing current or previous visible heading in current buffer.
+Typically for preselecting in Helm buffer."
+  (if (outline-on-heading-p)
+      (buffer-substring-no-properties (point-at-bol) (point-at-eol))
+    (save-excursion
+      (outline-previous-visible-heading 1)
+      (buffer-substring-no-properties (point-at-bol) (point-at-eol)))))
 
 (defun helm-navi--goto-marker (marker)
   "Switch to MARKER's buffer and go to it."
