@@ -1,6 +1,6 @@
-* helm-navi-outshine
+* helm-navi
 
-This package lets you navigate through a buffer using the headings and keywords provided by =outshine= and =navi-mode=, presented in a Helm buffer.  Here's an example (note that fontification will be shown according to your own theme and faces):
+This package lets you navigate through a buffer using the headings and keywords provided by =navi-mode= and =outshine=, presented in a Helm buffer.  Here's an example (note that fontification will be shown according to your own theme and faces):
 
 [[screenshot.png]]
 
@@ -8,17 +8,16 @@ This package lets you navigate through a buffer using the headings and keywords 
 
 Install the package from MELPA and you're all set!
 
-If you want to install it manually, put the two =.el= files in your =load-path=, then add this to your init file:
+If you want to install it manually, put =helm-navi.el= in your =load-path=, then add this to your init file:
 
 #+BEGIN_SRC elisp
-  (require 'helm-outshine)
   (require 'helm-navi)
 #+END_SRC
 
 ** Commands
 
-+  =helm-navi=: Show all headings and keywords provided by =navi-mode= in a Helm buffer.  This is the equivalent of running =outshine-navi= and then pressing =C-8 a=.
-+  =helm-outshine=: Show Outshine headings in Helm buffer.
++  =helm-navi=: Show all =navi-mode= keywords and =outshine= headings in a Helm buffer.  This is the equivalent of running =outshine-navi= and then pressing =C-8 a=.
++  =helm-navi-headings=: Show all =outshine= headings in Helm buffer.
 
 ** Contributions
 
@@ -26,8 +25,9 @@ Yes, please.
 
 ** Credits
 
-+  Thanks to Thierry Volpiatto for his tireless work on Helm.
-+  Thanks to Thorsten Jolitz for =outshine= / =outorg= / =navi-mode=.
++  Thanks to [[https://github.com/thierryvolpiatto][Thierry Volpiatto]] for his tireless work on Helm.
++  Thanks to [[https://github.com/tj64][Thorsten Jolitz]] for =outshine= / =outorg= / =navi-mode=.
++  Thanks to [[https://github.com/syohex][Syohei YOSHIDA]] and [[https://github.com/purcell][Steve Purcell]] for their tireless work curating MELPA.
 
 ** License
 
