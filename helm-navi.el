@@ -71,9 +71,10 @@ is ever a performance issue on slow machines, you can."
   "Show matches for all `navi-mode' keywords and `outshine' headings in current buffer."
   (interactive)
   (save-restriction
-    (helm :buffer "*helm-navi-headings-and-keywords-current-buffer*"
-          :sources (helm-source--navi-keywords-and-outshine-headings-in-buffer (current-buffer))
-          :preselect (helm-navi--in-buffer-preselect))))
+    (let ((helm-move-to-line-cycle-in-source t))
+      (helm :buffer "*helm-navi-headings-and-keywords-current-buffer*"
+            :sources (helm-source--navi-keywords-and-outshine-headings-in-buffer (current-buffer))
+            :preselect (helm-navi--in-buffer-preselect)))))
 
 ;;;###autoload
 (defalias 'helm-navi-headings 'helm-navi-headings-current-buffer)
@@ -82,9 +83,10 @@ is ever a performance issue on slow machines, you can."
 (defun helm-navi-headings-current-buffer ()
   "Show matches for Outshine headings in current buffer."
   (interactive)
-  (helm :buffer "*helm-navi-headings-current-buffer*"
-        :sources (helm-source--outshine-headings-in-buffer (current-buffer))
-        :preselect (helm-navi--current-or-previous-outshine-heading)))
+  (let ((helm-move-to-line-cycle-in-source t))
+    (helm :buffer "*helm-navi-headings-current-buffer*"
+          :sources (helm-source--outshine-headings-in-buffer (current-buffer))
+          :preselect (helm-navi--current-or-previous-outshine-heading))))
 
 ;;;;; Helm sources
 
