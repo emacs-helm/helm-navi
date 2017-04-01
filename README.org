@@ -19,6 +19,17 @@ If you want to install it manually, put =helm-navi.el= in your =load-path=, then
 +  =helm-navi=: Show all =navi-mode= keywords and =outshine= headings in a Helm buffer.  This is the equivalent of running =outshine-navi= and then pressing =C-8 a=.
 +  =helm-navi-headings=: Show all =outshine= headings in Helm buffer.
 
+** Tips
+
+If you use =use-package= to organize your init file, you may want to add this at the bottom of it, which makes it very easy to quickly navigate to individual package configuration with =helm-navi=:
+
+#+BEGIN_SRC elisp
+;; Local Variables:
+;; eval: (make-local-variable 'navi-keywords)
+;; eval: (setf (cdr (assoc :ALL (cdr (assoc "emacs-lisp" navi-keywords)))) "^[[:space:]]*(\\(use-package\\|\\(cl-\\)\\{0,1\\}def[a-z]+\\)\\*? ")
+;; End:
+#+END_SRC
+
 ** Contributions
 
 Yes, please.
