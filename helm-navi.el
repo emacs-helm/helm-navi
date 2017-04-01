@@ -172,11 +172,12 @@ Typically for preselecting in Helm buffer."
   (goto-char (marker-position marker)))
 
 (defun helm-navi--in-buffer-preselect ()
-  "Return string containing current or previous visible heading for preselecting in Helm buffer."
-  (save-excursion
-    (goto-char (line-end-position))
-    (when (re-search-backward (helm-navi--get-regexp))
-      (match-string 0))))
+  "Return string containing symbol-at-point, or current/previous visible heading for preselecting in Helm buffer."
+  (or (symbol-name (symbol-at-point))
+      (save-excursion
+        (goto-char (line-end-position))
+        (when (re-search-backward (helm-navi--get-regexp))
+          (match-string 0)))))
 
 (defun helm-navi--get-regexp ()
   "Return regexp for all headings and keywords in current buffer."
