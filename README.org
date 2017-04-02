@@ -23,13 +23,14 @@ If you want to install it manually, put =helm-navi.el= in your =load-path=, then
 
 ** Tips
 
-If you use =use-package= to organize your init file, you may want to add this at the bottom of it, which makes it very easy to quickly navigate to individual package configuration with =helm-navi=:
+If you use =use-package= to organize your init file, you may want to add this to your config, which makes it very easy to quickly navigate to individual package configuration with =helm-navi=:
 
 #+BEGIN_SRC elisp
-;; Local Variables:
-;; eval: (make-local-variable 'navi-keywords)
-;; eval: (setf (cdr (assoc :ALL (cdr (assoc "emacs-lisp" navi-keywords)))) "^[[:space:]]*(\\(use-package\\|\\(cl-\\)\\{0,1\\}def[a-z]+\\)\\*? ")
-;; End:
+  (use-package navi-mode
+    :config
+    ;; Add "use-package" lines to `navi-keywords'.
+    (setf (cdr (assoc :ALL (cdr (assoc "emacs-lisp" navi-keywords))))
+          "^[[:space:]]*(\\(use-package\\|\\(cl-\\)\\{0,1\\}def[a-z]+\\)\\*? "))
 #+END_SRC
 
 ** Contributions
