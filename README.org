@@ -1,5 +1,7 @@
 * helm-navi
 
+[[https://melpa.org/#/helm-navi][file:https://melpa.org/packages/helm-navi-badge.svg]]
+
 This package lets you navigate through a buffer using the headings and keywords provided by =navi-mode= and =outshine=, presented in a Helm buffer.  Here's an example (note that fontification will be shown according to your own theme and faces):
 
 [[screenshot.png]]
