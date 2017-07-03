@@ -43,6 +43,10 @@ Yes, please.
 +  Thanks to [[https://github.com/tj64][Thorsten Jolitz]] for =outshine= / =outorg= / =navi-mode=.
 +  Thanks to [[https://github.com/syohex][Syohei YOSHIDA]] and [[https://github.com/purcell][Steve Purcell]] for their tireless work curating MELPA.
 
+** See Also
+
++ [[https://ekaschalk.github.io/post/outline-ivy/][outline-ivy]]: A package that provides similar functionality for Ivy.
+
 ** License
 
 GPLv3
