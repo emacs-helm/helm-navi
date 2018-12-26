@@ -96,13 +96,13 @@ is ever a performance issue on slow machines, you can."
     :candidates (helm-navi--get-candidates-in-buffer buffer #'helm-navi--get-regexp)
     :action '(("Go to heading" . helm-navi--goto-marker))
     :follow 1
-    ;; FIXME: Calling `show-all' is not ideal,
-    ;; because collapsed/hidden nodes will be shown
-    ;; afterward, but I can't find a way to save this
-    ;; information and restore it.  In Org buffers,
-    ;; `org-show-entry' can be used, but I haven't
-    ;; been able to find a similar function for
-    ;; non-Org buffers.
+    :candidate-number-limit 500
+    ;; FIXME: Calling `show-all' is not ideal, because
+    ;; collapsed/hidden nodes will be shown afterward, but I can't
+    ;; find a way to save this information and restore it.  In Org
+    ;; buffers, `org-show-entry' can be used, but I haven't been able
+    ;; to find a similar function for non-Org buffers.  Similar issue
+    ;; mentioned at <https://github.com/tj64/outshine/issues/21>.
     :init 'show-all))
 
 (defun helm-source--outshine-headings-in-buffer (buffer)
