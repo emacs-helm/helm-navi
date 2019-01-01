@@ -119,11 +119,11 @@ is ever a performance issue on slow machines, you can."
   "Return Outshine heading candidates in BUFFER.
 Optional argument REGEXP is a regular expression to match, a
 function to return a regular expression, or
-`outline-promotion-headings' by default."
+`outshine-promotion-headings' by default."
   ;; Much of this code is copied from helm-org.el
   (with-current-buffer buffer
     ;; Make sure outshine is loaded
-    (unless outline-promotion-headings
+    (unless outshine-promotion-headings
       (error "Outshine is not activated in buffer \"%s\".  Activate `outline-minor-mode', or consult Outshine's documentation for further instructions if necessary." (buffer-name buffer)))
     (let* ((heading-regexp (pcase regexp
                              ((pred functionp) (funcall regexp))
@@ -131,7 +131,7 @@ function to return a regular expression, or
                              ((pred null) (concat "^\\("
                                                   (mapconcat (lambda (s)
                                                                (s-trim (car s)))
-                                                             outline-promotion-headings
+                                                             outshine-promotion-headings
                                                              "\\|")
                                                   "\\)"
                                                   "\s+\\(.*\\)$"))))
@@ -191,7 +191,7 @@ Typically for preselecting in Helm buffer."
                             :ALL)
            (mapconcat (lambda (s)
                         (s-trim (car s)))
-                      outline-promotion-headings
+                      outshine-promotion-headings
                       "\\|"))
           ".*$"))
 
