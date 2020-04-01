@@ -3,7 +3,7 @@
 ;; Author: Adam Porter <adam@alphapapa.net>
 ;; Url: http://github.com/emacs-helm/helm-navi
 ;; Version: 0.1-pre
-;; Package-Requires: ((emacs "24.4") (helm "1.9.4") (navi-mode "2.0") (s "1.10.0"))
+;; Package-Requires: ((emacs "24.4") (helm "1.9.4") (helm-org "1.0") (navi-mode "2.0") (s "1.10.0"))
 ;; Keywords: navigation, outlines
 
 ;; Copyright (C) 2012 ~ 2017 Thierry Volpiatto <thierry.volpiatto@gmail.com>
