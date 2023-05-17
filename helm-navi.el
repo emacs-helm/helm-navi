@@ -130,7 +130,9 @@ function to return a regular expression, or
                              ((pred stringp) regexp)
                              ((pred null) (concat "^\\("
                                                   (mapconcat (lambda (s)
-                                                               (s-trim (car s)))
+                                                               (if (string= outshine-regexp-base-char "*")
+                                                                   (replace-regexp-in-string (regexp-quote "*") "\\*" (s-trim (car s)) nil 'literal)
+                                                                 (s-trim (car s))))
                                                              outshine-promotion-headings
                                                              "\\|")
                                                   "\\)"
